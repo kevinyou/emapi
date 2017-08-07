@@ -1,14 +1,15 @@
 from flask import Flask
 from flask_restful import Resource, Api
-import requests
+
+from gamerecords import GameRecords
 
 app = Flask(__name__)
 api = Api(app)
+gamerecords = GameRecords()
 
 class Table(Resource):
     def get(self, game_id):
-        r = requests.get(url='https://s3.amazonaws.com/em-gamerecords/' + str(game_id))
-        return r.json()
+        return gamerecords.get_records(game_id)
 
 api.add_resource(Table, '/table/<int:game_id>')
 
